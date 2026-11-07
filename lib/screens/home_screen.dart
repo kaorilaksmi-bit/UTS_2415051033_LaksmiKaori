@@ -8,6 +8,7 @@ import '../widgets/recipe_card.dart';
 import '../widgets/recipe_grid.dart';
 import '../widgets/search_field.dart';
 import '../widgets/state_views.dart';
+import 'profile_screen.dart';
 import 'recipe_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -48,9 +49,20 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-                    const CircleAvatar(
-                      backgroundColor: AppColors.primary,
-                      child: Icon(Icons.person, color: Colors.white),
+                    // Ikon profil sekarang bisa diklik untuk membuka Halaman Profil
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ProfileScreen(),
+                          ),
+                        );
+                      },
+                      child: const CircleAvatar(
+                        backgroundColor: AppColors.primary,
+                        child: Icon(Icons.person, color: Colors.white),
+                      ),
                     ),
                   ],
                 ),
