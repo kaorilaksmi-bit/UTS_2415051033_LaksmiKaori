@@ -1,17 +1,62 @@
-# resepku
+# ResepKU - Aplikasi Resep Kuliner & Manajemen Favorit
 
-A new Flutter project.
+Aplikasi **ResepKU** adalah platform mobile & web berbasis Flutter yang dirancang untuk membantu pengguna menjelajahi berbagai resep kuliner global, melihat bahan dan langkah memasak dalam Bahasa Indonesia, serta menyimpan resep favorit dengan catatan pribadi dan rating ke database Supabase.
 
-## Getting Started
+Proyek ini disusun untuk memenuhi **Ujian Tengah Semester (UTS)** mata kuliah Pemrograman Berbasis Mobile.
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## 👩‍🎓 Identitas Mahasiswa
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+* **Nama**: Ni Komang Laksmi Kaori
+* **NIM**: 2415051033
+* **Kelas**: PTI 5 C
+* **Prodi**: Pendidikan Teknik Informatika 
+* **Instansi**: Universitas Pendidikan Ganesha
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## 🚀 Fitur Utama
+
+1. **Responsif & Adaptif (Multi-platform)**
+   * Menyesuaikan tampilan secara dinamis untuk perangkat smartphone (`NavigationBar`) dan laptop/tablet (`NavigationRail`).
+2. **Pencarian & Eksplorasi Resep Live**
+   * Mengintegrasikan REST API dari [TheMealDB](https://www.themealdb.com/) untuk memuat resep populer dan pencarian kata kunci *real-time*.
+3. **Penerjemahan Otomatis & Penomoran Langkah Rapi**
+   * Menerjemahkan nama bahan dan instruksi memasak ke Bahasa Indonesia menggunakan integrasi `translator`.
+   * Menampilkan langkah-langkah memasak dalam format nomor urut (`1., 2., 3...`) yang terstruktur.
+4. **Backend Database CRUD (Supabase)**
+   * **Create**: Menyimpan resep ke daftar favorit lengkap dengan rating bintang (1-5), status dimasak, dan catatan pribadi.
+   * **Read**: Memuat daftar favorit pribadi langsung dari database cloud Supabase (`saved_recipes`).
+   * **Update**: Memperbarui catatan dan rating resep favorit kapan saja.
+   * **Delete**: Menghapus resep dari daftar favorit.
+5. **State Management & State Handling**
+   * Dikelola penuh menggunakan skema `Provider` (`ChangeNotifier`).
+   * Penanganan state interaktif: *Loading*, *Success*, *Error*, dan *Empty State*.
+
+---
+
+## 🛠️ Teknologi & Library
+
+* **Framework**: Flutter (Dart SDK)
+* **State Management**: `provider`
+* **HTTP Client**: `http`
+* **Backend Cloud**: Supabase (`supabase_flutter`)
+* **Environment Config**: `flutter_dotenv`
+* **Translation Engine**: `translator`
+
+---
+
+## 📂 Struktur Folder Proyek
+
+```text
+lib/
+├── core/              # Tema, warna, konstanta, dan exception handler
+├── models/            # Model data (Recipe, RecipeCategory, SavedRecipe)
+├── providers/         # State management (RecipeProvider, FavoriteProvider)
+├── repositories/      # Layer bisnis/data repository
+├── screens/           # Tampilan utama (Home, Search, Detail, Favorites, Profile)
+├── services/          # Integrasi API (MealApiService, SavedRecipeService)
+└── widgets/           # Komponen UI reusable (Card, Grid, Form Sheet, State Views)
+supabase/
+└── schema.sql         # Skema database & RLS policy Supabase
