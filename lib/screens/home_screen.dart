@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
 import '../core/constants.dart';
 import '../widgets/recipe_card.dart';
+import '../widgets/recipe_grid.dart';
 import '../widgets/search_field.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -62,26 +63,19 @@ class HomeScreen extends StatelessWidget {
                   'Populer Hari Ini',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                 ),
-                const SizedBox(height: 12),
+                const SizedBox(height: 8),
 
-                // Horizontal ListView Kartu Resep Dummy
-                SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 3,
-                    itemBuilder: (context, index) {
-                      return SizedBox(
-                        width: 160,
-                        child: RecipeCard(
-                          title: 'Ayam Goreng Spesial',
-                          subtitle: 'Chicken • Indonesian',
-                          imageUrl: 'https://www.themealdb.com/images/media/meals/58omtl1618304657.jpg',
-                          onTap: () {},
-                        ),
-                      );
-                    },
-                  ),
+                // Grid Responsif (Otomatis 2, 3, atau 4 kolom)
+                RecipeGrid(
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return RecipeCard(
+                      title: 'Ayam Goreng Spesial $index',
+                      subtitle: 'Chicken • Indonesian',
+                      imageUrl: 'https://www.themealdb.com/images/media/meals/58omtl1618304657.jpg',
+                      onTap: () {},
+                    );
+                  },
                 ),
               ],
             ),
