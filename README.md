@@ -36,6 +36,14 @@ Proyek ini disusun untuk memenuhi **Ujian Tengah Semester (UTS)** mata kuliah Pe
 
 ---
 
+## 📱 Tampilan Aplikasi
+
+| Beranda | Pencarian | Detail Resep | Catatan Resep | Favorit | Profil |
+| :---: | :---: | :---: | :---: | :---: | :---: |
+| <img src="assets/screenshots.apk/Beranda.png" width="160"> | <img src="assets/screenshots.apk/Pencarian.png" width="160"> | <img src="assets/screenshots.apk/Detail%20Resep.png" width="160"> | <img src="assets/screenshots.apk/Catatan%20Resep.png" width="160"> | <img src="assets/screenshots.apk/Favorit.png" width="160"> | <img src="assets/screenshots.apk/Profil.png" width="160"> |
+
+---
+
 ## 🛠️ Teknologi & Library
 
 * **Framework**: Flutter (Dart SDK)
