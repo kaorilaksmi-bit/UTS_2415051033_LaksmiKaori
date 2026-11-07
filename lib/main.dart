@@ -5,6 +5,8 @@ import 'core/app_theme.dart';
 import 'core/constants.dart';
 import 'providers/favorite_provider.dart';
 import 'providers/recipe_provider.dart';
+import 'repositories/recipe_repository.dart';
+import 'services/meal_api_service.dart';
 import 'screens/main_shell.dart';
 
 void main() {
@@ -18,7 +20,9 @@ class ResepKuApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => RecipeProvider()..loadRecipes()),
+        ChangeNotifierProvider(
+          create: (_) => RecipeProvider(RecipeRepository(MealApiService()))..loadRecipes(),
+        ),
         ChangeNotifierProvider(create: (_) => FavoriteProvider()),
       ],
       child: MaterialApp(
