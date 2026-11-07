@@ -1,6 +1,7 @@
 // lib/screens/recipe_detail_screen.dart
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:translator/translator.dart';
 import '../core/app_colors.dart';
 import '../models/recipe.dart';
 import '../models/saved_recipe.dart';
@@ -20,25 +21,64 @@ class RecipeDetailScreen extends StatefulWidget {
 
 class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   final _repo = RecipeRepository(MealApiService());
+  final _translator = GoogleTranslator();
+
   Recipe? _recipe;
   bool _isLoading = true;
   String? _error;
+  
+  List<String> _translatedIngredients = [];
+  List<String> _translatedSteps = [];
 
   @override
   void initState() {
     super.initState();
-    _fetchDetail();
+    _fetchAndTranslateDetail();
   }
 
-  Future<void> _fetchDetail() async {
+  Future<void> _fetchAndTranslateDetail() async {
     setState(() {
       _isLoading = true;
       _error = null;
     });
+
     try {
       final res = await _repo.detail(widget.mealId);
+      _recipe = res;
+
+      if (_recipe != null) {
+        // 1. Terjemahkan Bahan-bahan secara paralel
+        final ingFutures = _recipe!.ingredients.map((ing) async {
+          final text = '${ing.name} (${ing.measure})';
+          try {
+            final translation = await _translator.translate(text, to: 'id');
+            return translation.text;
+          } catch (_) {
+            return text; // Fallback jika koneksi terjemahan terganggu
+          }
+        });
+        _translatedIngredients = await Future.wait(ingFutures);
+
+        // 2. BerSIHKAN & Terjemahkan Langkah Memasak
+        if (_recipe!.instructions != null && _recipe!.instructions!.trim().isNotEmpty) {
+          final rawSteps = _recipe!.instructions!
+              .split(RegExp(r'\r?\n|\d+\.\s*'))
+              .where((s) => s.trim().length > 2)
+              .toList();
+
+          final stepFutures = rawSteps.map((step) async {
+            try {
+              final translation = await _translator.translate(step.trim(), to: 'id');
+              return translation.text;
+            } catch (_) {
+              return step.trim();
+            }
+          });
+          _translatedSteps = await Future.wait(stepFutures);
+        }
+      }
+
       setState(() {
-        _recipe = res;
         _isLoading = false;
       });
     } catch (e) {
@@ -108,7 +148,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
       body: _isLoading
           ? const LoadingView()
           : _error != null
-              ? ErrorView(message: _error!, onRetry: _fetchDetail)
+              ? ErrorView(message: _error!, onRetry: _fetchAndTranslateDetail)
               : _recipe == null
                   ? const EmptyView(title: 'Resep tidak ditemukan', subtitle: '')
                   : SingleChildScrollView(
@@ -116,7 +156,6 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Gambar Resep
                           ClipRRect(
                             borderRadius: BorderRadius.circular(12),
                             child: Image.network(
@@ -133,7 +172,6 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                           ),
                           const SizedBox(height: 16),
 
-                          // Judul & Kategori
                           Text(
                             _recipe!.name,
                             style: const TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
@@ -142,29 +180,72 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
                             '${_recipe!.category ?? ''} • ${_recipe!.area ?? ''}',
                             style: const TextStyle(color: AppColors.muted, fontSize: 14),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 20),
 
-                          // Section Bahan-bahan
+                          // Section Bahan-bahan (Otomatis Terjemah)
                           const Text('Bahan-Bahan:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
                           const SizedBox(height: 8),
-                          ..._recipe!.ingredients.map(
-                            (ing) => Padding(
+                          ..._translatedIngredients.map(
+                            (ingText) => Padding(
                               padding: const EdgeInsets.symmetric(vertical: 4),
                               child: Row(
                                 children: [
                                   const Icon(Icons.check_circle_outline, size: 18, color: AppColors.primary),
                                   const SizedBox(width: 8),
-                                  Text('${ing.name} (${ing.measure})'),
+                                  Expanded(
+                                    child: Text(
+                                      ingText,
+                                      style: const TextStyle(fontSize: 14),
+                                    ),
+                                  ),
                                 ],
                               ),
                             ),
                           ),
-                          const SizedBox(height: 16),
+                          const SizedBox(height: 24),
 
-                          // Section Instruksi
+                          // Section Langkah Memasak (Otomatis Terjemah & Penomoran Rapi 1, 2, 3...)
                           const Text('Langkah Memasak:', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                          const SizedBox(height: 8),
-                          Text(_recipe!.instructions ?? 'Tidak ada instruksi.'),
+                          const SizedBox(height: 12),
+                          if (_translatedSteps.isEmpty)
+                            const Text('Tidak ada instruksi langkah memasak.')
+                          else
+                            ..._translatedSteps.asMap().entries.map((entry) {
+                              final index = entry.key + 1;
+                              final stepText = entry.value;
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom: 12),
+                                child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                      width: 26,
+                                      height: 26,
+                                      alignment: Alignment.center,
+                                      decoration: const BoxDecoration(
+                                        color: AppColors.primary,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      child: Text(
+                                        '$index',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 12,
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 12),
+                                    Expanded(
+                                      child: Text(
+                                        stepText,
+                                        style: const TextStyle(fontSize: 14, height: 1.4),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            }),
                         ],
                       ),
                     ),
