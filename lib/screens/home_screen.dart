@@ -2,12 +2,45 @@
 import 'package:flutter/material.dart';
 import '../core/app_colors.dart';
 import '../core/constants.dart';
+import '../models/recipe.dart';
 import '../widgets/recipe_card.dart';
 import '../widgets/recipe_grid.dart';
 import '../widgets/search_field.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
+
+  // Data dummy menggunakan model Recipe dengan URL gambar CORS-friendly
+  static final List<Recipe> _dummyRecipes = [
+    const Recipe(
+      id: '52772',
+      name: 'Teriyaki Chicken Casserole',
+      thumbnail: 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500',
+      category: 'Chicken',
+      area: 'Japanese',
+    ),
+    const Recipe(
+      id: '52768',
+      name: 'Double Cheeseburger',
+      thumbnail: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500',
+      category: 'Dessert',
+      area: 'British',
+    ),
+    const Recipe(
+      id: '52804',
+      name: 'Bacon Burger',
+      thumbnail: 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?w=500',
+      category: 'Miscellaneous',
+      area: 'Canadian',
+    ),
+    const Recipe(
+      id: '52977',
+      name: 'Corba',
+      thumbnail: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=500',
+      category: 'Side',
+      area: 'Turkish',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -65,14 +98,15 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
 
-                // Grid Responsif (Otomatis 2, 3, atau 4 kolom)
+                // Grid Responsif dengan Objek Model Recipe
                 RecipeGrid(
-                  itemCount: 4,
+                  itemCount: _dummyRecipes.length,
                   itemBuilder: (context, index) {
+                    final recipe = _dummyRecipes[index];
                     return RecipeCard(
-                      title: 'Ayam Goreng Spesial $index',
-                      subtitle: 'Chicken • Indonesian',
-                      imageUrl: 'https://www.themealdb.com/images/media/meals/58omtl1618304657.jpg',
+                      title: recipe.name,
+                      subtitle: '${recipe.category ?? ''} • ${recipe.area ?? ''}',
+                      imageUrl: recipe.thumbnail,
                       onTap: () {},
                     );
                   },
