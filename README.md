@@ -98,3 +98,18 @@ Jalankan aplikasi di perangkat emulator, atau perangkat fisik:
 ```bash
 flutter run 
 ```
+
+---
+
+## 📱 Download Application Package (APK)
+
+Aplikasi **ResepKU** dapat langsung diinstal dan diuji pada perangkat Android melalui tautan di bawah ini:
+
+- 📥 **Direct Download APK**: [Download ResepKU v1.0.0 (Release APK)](https://drive.google.com/file/d/1zZNIPokyC7rlVIJtMfP9m0RdoR9AoaJj/view?usp=sharing)
+- 🌐 **Web Version**: Available on `build/web`
+
+### Spesifikasi APK:
+- **Nama File**: `ResepKU_2415051033_Ni Komang Laksmi Kaori.apk`
+- **Versi Application**: 1.0.0
+- **Target OS**: Android 5.0 (API Level 21) ke atas
+- **Ukuran File**: ~52.6 MB
