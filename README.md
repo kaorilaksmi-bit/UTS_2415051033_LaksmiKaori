@@ -57,7 +57,6 @@ Proyek ini disusun untuk memenuhi **Ujian Tengah Semester (UTS)** mata kuliah Pe
 
 ## 📂 Struktur Folder Proyek
 
-```text
 lib/
 ├── core/              # Tema, warna, konstanta, dan exception handler
 ├── models/            # Model data (Recipe, RecipeCategory, SavedRecipe)
