@@ -6,8 +6,8 @@ import '../models/recipe.dart';
 import '../models/saved_recipe.dart';
 import '../providers/favorite_provider.dart';
 import '../providers/recipe_provider.dart';
-import '../widgets/favorite_form_sheet.dart';
 import '../widgets/state_views.dart';
+import 'favorite_form_screen.dart';
 import 'recipe_detail_screen.dart';
 
 class FavoritesScreen extends StatelessWidget {
@@ -87,14 +87,18 @@ class FavoritesScreen extends StatelessWidget {
                                 (r) => r.id == item.mealId,
                                 orElse: () => itemToRecipe(item),
                               );
-                              final result = await showModalBottomSheet<SavedRecipe>(
-                                context: context,
-                                isScrollControlled: true,
-                                builder: (_) => FavoriteFormSheet(
-                                  recipe: recipeObj,
-                                  initialSaved: item,
+
+                              // Menggunakan Navigator.push ke FavoriteFormScreen (Screen Penuh)
+                              final result = await Navigator.push<SavedRecipe>(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => FavoriteFormScreen(
+                                    recipe: recipeObj,
+                                    initialSaved: item,
+                                  ),
                                 ),
                               );
+
                               if (result != null && context.mounted) {
                                 await provider.update(result);
                               }
@@ -103,7 +107,7 @@ class FavoritesScreen extends StatelessWidget {
                           IconButton(
                             icon: const Icon(Icons.delete_outline, color: Colors.red),
                             onPressed: () async {
-                              // Menampilkan AlertDialog Konfirmasi Hapus
+                              // Menampilkan AlertDialog Konfirmasi Hapus (Kriteria 5)
                               final confirm = await showDialog<bool>(
                                 context: context,
                                 builder: (ctx) => AlertDialog(

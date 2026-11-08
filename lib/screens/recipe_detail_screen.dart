@@ -8,8 +8,8 @@ import '../models/saved_recipe.dart';
 import '../providers/favorite_provider.dart';
 import '../repositories/recipe_repository.dart';
 import '../services/meal_api_service.dart';
-import '../widgets/favorite_form_sheet.dart';
 import '../widgets/state_views.dart';
+import 'favorite_form_screen.dart';
 
 class RecipeDetailScreen extends StatefulWidget {
   const RecipeDetailScreen({super.key, required this.mealId});
@@ -26,7 +26,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   Recipe? _recipe;
   bool _isLoading = true;
   String? _error;
-  
+
   List<String> _translatedIngredients = [];
   List<String> _translatedSteps = [];
 
@@ -59,7 +59,7 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
         });
         _translatedIngredients = await Future.wait(ingFutures);
 
-        // 2. BerSIHKAN & Terjemahkan Langkah Memasak
+        // 2. Bersihkan & Terjemahkan Langkah Memasak
         if (_recipe!.instructions != null && _recipe!.instructions!.trim().isNotEmpty) {
           final rawSteps = _recipe!.instructions!
               .split(RegExp(r'\r?\n|\d+\.\s*'))
@@ -92,10 +92,12 @@ class _RecipeDetailScreenState extends State<RecipeDetailScreen> {
   void _openFavoriteForm(BuildContext context, FavoriteProvider favProvider, SavedRecipe? existing) async {
     if (_recipe == null) return;
     
-    final SavedRecipe? result = await showModalBottomSheet<SavedRecipe>(
-      context: context,
-      isScrollControlled: true,
-      builder: (_) => FavoriteFormSheet(recipe: _recipe!, initialSaved: existing),
+    // Membuka FavoriteFormScreen sebagai Route Halaman Penuh via Navigator.push
+    final SavedRecipe? result = await Navigator.push<SavedRecipe>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => FavoriteFormScreen(recipe: _recipe!, initialSaved: existing),
+      ),
     );
 
     if (result != null && context.mounted) {
