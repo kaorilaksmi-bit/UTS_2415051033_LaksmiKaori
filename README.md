@@ -29,7 +29,7 @@ Proyek ini disusun untuk memenuhi **Ujian Tengah Semester (UTS)** mata kuliah Pe
    * **Create**: Menyimpan resep ke daftar favorit lengkap dengan rating bintang (1-5), status dimasak, dan catatan pribadi.
    * **Read**: Memuat daftar favorit pribadi langsung dari database cloud Supabase (`saved_recipes`).
    * **Update**: Memperbarui catatan dan rating resep favorit kapan saja.
-   * **Delete**: Menghapus resep dari daftar favorit.
+   * **Delete**: Menghapus resep dari daftar favorit dengan konfirmasi dialog.
 5. **State Management & State Handling**
    * Dikelola penuh menggunakan skema `Provider` (`ChangeNotifier`).
    * Penanganan state interaktif: *Loading*, *Success*, *Error*, dan *Empty State*.
@@ -57,21 +57,44 @@ Proyek ini disusun untuk memenuhi **Ujian Tengah Semester (UTS)** mata kuliah Pe
 
 ## 📂 Struktur Folder Proyek
 
+```text
 lib/
 ├── core/              # Tema, warna, konstanta, dan exception handler
 ├── models/            # Model data (Recipe, RecipeCategory, SavedRecipe)
 ├── providers/         # State management (RecipeProvider, FavoriteProvider)
 ├── repositories/      # Layer bisnis/data repository
-├── screens/           # Tampilan utama (Home, Search, Detail, Favorites, Profile)
+├── screens/           # Tampilan utama (Home, Search, Detail, FavoriteForm, Favorites, Profile)
 ├── services/          # Integrasi API (MealApiService, SavedRecipeService)
-└── widgets/           # Komponen UI reusable (Card, Grid, Form Sheet, State Views)
+└── widgets/           # Komponen UI reusable (Card, Grid, State Views)
 supabase/
 └── schema.sql         # Skema database & RLS policy Supabase
+```
 
---- 
+---
 
 ## ⚙️ Cara Menjalankan Project
 
+### 1. Clone Repositori
 ```bash
-git clone https://github.com/kaorilaksmi-bit/UTS_2415051033_LaksmiKaori.git 
-cd UTS_2415051033_LaksmiKaori 
+git clone https://github.com/kaorilaksmi-bit/UTS_2415051033_LaksmiKaori.git
+cd UTS_2415051033_LaksmiKaori
+```
+
+### 2. Install Dependensi
+Jalankan perintah berikut untuk mengunduh semua library/package yang digunakan:
+```bash
+flutter pub get
+```
+
+### 3. Konfigurasi Environment (`.env`)
+Buat file `.env` di direktori utama (root) proyek dan isi dengan kredensial Supabase Anda:
+```env
+SUPABASE_URL=https://dxzmoabstldohahkyolc.supabase.co
+SUPABASE_ANON_KEY=sb_publishable_33a8Ivxrw6b-LL7DF-8AEQ_KE9WSanF
+```
+
+### 4. Jalankan Aplikasi
+Jalankan aplikasi di perangkat emulator, atau perangkat fisik:
+```bash
+flutter run 
+```
