@@ -68,3 +68,11 @@ lib/
 └── widgets/           # Komponen UI reusable (Card, Grid, Form Sheet, State Views)
 supabase/
 └── schema.sql         # Skema database & RLS policy Supabase
+
+--- 
+
+## ⚙️ Cara Menjalankan Project
+
+```bash
+git clone https://github.com/kaorilaksmi-bit/UTS_2415051033_LaksmiKaori.git 
+cd UTS_2415051033_LaksmiKaori 
