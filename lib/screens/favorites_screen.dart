@@ -103,11 +103,41 @@ class FavoritesScreen extends StatelessWidget {
                           IconButton(
                             icon: const Icon(Icons.delete_outline, color: Colors.red),
                             onPressed: () async {
-                              await provider.remove(item.id!);
-                              if (context.mounted) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(content: Text('Resep dihapus dari favorit')),
-                                );
+                              // Menampilkan AlertDialog Konfirmasi Hapus
+                              final confirm = await showDialog<bool>(
+                                context: context,
+                                builder: (ctx) => AlertDialog(
+                                  title: const Text('Konfirmasi Hapus'),
+                                  content: const Text(
+                                    'Apakah Anda yakin ingin menghapus resep ini dari favorit?',
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () => Navigator.pop(ctx, false),
+                                      child: const Text('Batal'),
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.red,
+                                        foregroundColor: Colors.white,
+                                      ),
+                                      onPressed: () => Navigator.pop(ctx, true),
+                                      child: const Text('Hapus'),
+                                    ),
+                                  ],
+                                ),
+                              );
+
+                              // Eksekusi penghapusan hanya jika pengguna menekan tombol "Hapus"
+                              if (confirm == true && context.mounted) {
+                                await provider.remove(item.id!);
+                                if (context.mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Resep berhasil dihapus dari favorit'),
+                                    ),
+                                  );
+                                }
                               }
                             },
                           ),
