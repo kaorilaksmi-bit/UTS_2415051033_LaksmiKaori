@@ -105,11 +105,11 @@ flutter run
 
 Aplikasi **ResepKU** dapat langsung diinstal dan diuji pada perangkat Android melalui tautan di bawah ini:
 
-- 📥 **Direct Download APK**: [Download ResepKU v1.0.0 (Release APK)](https://drive.google.com/file/d/1zZNIPokyC7rlVIJtMfP9m0RdoR9AoaJj/view?usp=sharing)
+- 📥 **Direct Download APK**: [Download UTS_2415051033_Ni Komang Laksmi Kaori (Release APK)](https://drive.google.com/file/d/1zZNIPokyC7rlVIJtMfP9m0RdoR9AoaJj/view?usp=drive_link)
 - 🌐 **Web Version**: Available on `build/web`
 
 ### Spesifikasi APK:
-- **Nama File**: `ResepKU_2415051033_Ni Komang Laksmi Kaori.apk`
+- **Nama File**: `UTS_2415051033_Ni Komang Laksmi Kaori.apk`
 - **Versi Application**: 1.0.0
 - **Target OS**: Android 5.0 (API Level 21) ke atas
 - **Ukuran File**: ~52.6 MB
